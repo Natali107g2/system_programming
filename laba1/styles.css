@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap; /* текст в одну строку */
+  overflow: hidden; /* скрываем переполненный текст */
+  text-overflow: ellipsis; /* добавляем многоточие в конце строки */
+}
+
+li:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+li:hover {
+  background-color: #ddd;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+#noTasksMessage {
+  display: none;
+  text-align: center;
+}
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+#addTaskButton {
+  background-color: green;
+  color: white;
+}
+
+#clearTasksButton {
+  background-color: red;
+  color: white;
+}
+#input-container {
+    margin-bottom: 20px;
+	display: flex; /* Используем flexbox */
+    align-items: center; /* Выравниваем элементы по центру */
+}
+
+#taskInput{
+    flex: 1; /* Растягиваем поле ввода на всю доступную ширину */
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

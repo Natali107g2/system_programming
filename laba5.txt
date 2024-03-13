@@ -1,0 +1,310 @@
+часть1
+//1 Написать функцию counter(n), которая выводит в консоль раз в секунду числа n, n-1 ... 2, 1, 0 и останавливается.
+function counter(n) {
+    if (n < 0) {
+        return;
+    }
+
+    console.log(n);
+    setTimeout(() => counter(n - 1), 1000);
+}
+
+counter(5); // Здесь передаем число, с которого начнется обратный отсчет
+
+//1.2 Написать функцию createCounter(n), возвращающую объект с методами:
+start() -- запускает (или возобновляет) счётчик c интервалом 1 секунда: N, N-1.
+pause() -- приостанавливает счёт, но не сбрасывает счётчик.
+stop() -- останавливает счёт, сбрасывает счётчик.
+
+function createCounter(n) {
+    let count = n;
+    let intervalId;
+
+    function start() {
+        console.log(count);
+        intervalId = setInterval(() => {
+            count--;
+            console.log(count);
+        }, 1000);
+    }
+
+    function pause() {
+        clearInterval(intervalId);
+    }
+
+    function stop() {
+        clearInterval(intervalId);
+        count = n;
+    }
+
+    return {
+        start,
+        pause,
+        stop
+    };
+}
+const counter = createCounter(5); // Создаем объект счетчика, начинающегося с числа 5
+counter.start(); // Запускаем счетчик
+// Через некоторое время вызываем counter.pause() для приостановки счетчика
+// После этого можно вызвать counter.start() для продолжения счета
+// Для полного останова счетчика вызываем counter.stop()
+
+//2 Написать функцию delay(N), возвращающую промис, который сделает resolve() через N секунд.
+function delay(N) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, N * 1000);
+    });
+}
+
+// Пример использования
+delay(3).then(() => {
+    console.log('Прошло 3 секунды');
+});
+
+// Промис будет зарезолвлен через 3 секунды, и выведет 'Прошло 3 секунды'
+
+//2.2 Решить задачу со счётчиком N, N-1 ... 2, 1, 0 через функцию delay.
+function countdown(N) {
+    console.log(N);
+    if (N > 0) {
+        return delay(1).then(() => countdown(N - 1));
+    }
+}
+
+function delay(seconds) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, seconds * 1000);
+    });
+}
+
+// Запускаем счётчик от N до 0
+countdown(5);
+
+//2.3 Написать функцию, возвращающую название первого репозитория на github.com по имени пользователя (2 последовательных запроса: https://api.github.com/users/%USERNAME%).
+async function getFirstRepository(username) {
+    try {
+        const userResponse = await fetch(https://api.github.com/users/${username});
+        const userData = await userResponse.json();
+
+        if (userData.public_repos > 0) {
+            const reposResponse = await fetch(userData.repos_url);
+            const reposData = await reposResponse.json();
+
+            if (reposData.length > 0) {
+                return reposData[0].name;
+            } else {
+                return "У пользователя нет репозиториев.";
+            }
+        } else {
+            return "У пользователя нет публичных репозиториев.";
+        }
+    } catch (error) {
+        return "Произошла ошибка при получении данных с GitHub API.";
+    }
+}
+
+// Пример использования функции
+const username = "octocat"; // Замените на нужное имя пользователя
+getFirstRepository(username)
+    .then((repositoryName) => {
+        console.log(Первый репозиторий пользователя ${username}: ${repositoryName});
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+//3 Перепишите, используя async/await вместо .then/catch.
+В функции getGithubUser замените рекурсию на цикл, используя async/await.
+
+class HttpError extends Error {
+    constructor(response) {
+        super(${response.status} for ${response.url});
+        this.name = 'HttpError';
+        this.response = response;
+    }
+}
+
+async function loadJson(url) {
+    const response = await fetch(url);
+    if (response.status === 200) {
+        return response.json();
+    } else {
+        throw new HttpError(response);
+    }
+}
+
+async function getGithubUser() {
+    let user;
+    while (!user) {
+        let name = prompt("Введите логин?", "iliakan");
+        try {
+            user = await loadJson(https://api.github.com/users/${name});
+            alert(Полное имя: ${user.name}.);
+        } catch (err) {
+            if (err instanceof HttpError && err.response.status === 404) {
+                alert("Такого пользователя не существует, пожалуйста, повторите ввод.");
+            } else {
+                throw err;
+            }
+        }
+    }
+    return user;
+}
+
+getGithubUser();
+
+
+чАСТЬ 2
+//1 Посчитать максимум и минимум массива:
+const arr = [1, 6, -1, 22, 13];
+
+const arr = [1, 6, -1, 22, 13];
+const max = Math.max(...arr);
+const min = Math.min(...arr);
+
+console.log(Максимум: ${max});
+console.log(Минимум: ${min});
+
+//2 Перевернуть строку задом наперёд:
+const str = "!тевирП";
+
+const str = "!тевирП";
+const reversedStr = str.split('').reverse().join('');
+console.log(reversedStr); // Output: "Привет!"
+
+Перевернуть введенную пользователем строку задом наперед.
+const userString = prompt("Введите строку:");
+const reversedString = userString.split('').reverse().join('');
+console.log(reversedString);
+
+//3 Вычислить сумму квадратных корней для всех чётных чисел целочисленного массива:
+const arr = [3, 5, 8, 13, 21, 42];
+
+const arr = [3, 5, 8, 13, 21, 42];
+let sumSquareRoots = 0;
+
+arr.forEach(num => {
+    if (num % 2 === 0) {
+        sumSquareRoots += Math.sqrt(num);
+    }
+});
+
+console.log(sumSquareRoots);
+
+//4 Написать функцию, которая проверяет, являются ли две строки анаграммой:
+anagram("Лунь", "нуль") // true
+anagram("Лунь", "ноль") // false
+
+function anagram(str1, str2) {
+    const formatStr = str => str.toLowerCase().replace(/[\W_]/g, '');
+    
+    const cleanStr1 = formatStr(str1);
+    const cleanStr2 = formatStr(str2);
+    
+    if (cleanStr1.length !== cleanStr2.length) {
+        return false;
+    }
+    
+    const sortedStr1 = cleanStr1.split('').sort().join('');
+    const sortedStr2 = cleanStr2.split('').sort().join('');
+    
+    return sortedStr1 === sortedStr2;
+}
+
+console.log(anagram("Лунь", "нуль")); // true
+console.log(anagram("Лунь", "ноль")); // false
+
+//5 Написать функцию, которая проверяет, является ли строка палиндромом:
+palindrome("Не гни папин ген") // true
+palindrome("123") // false
+
+function palindrome(str) {
+    const cleanStr = str.toLowerCase().replace(/[\W_]/g, '');
+    const reversedStr = cleanStr.split('').reverse().join('');
+    
+    return cleanStr === reversedStr;
+}
+
+console.log(palindrome("Не гни папин ген")); // true
+console.log(palindrome("123")); // false
+
+//6 Написать функцию, которая после вызова каждую секунду пишет в консоль очередное число Фибоначчи. Так, в консоли будет: 0, 1, 1, 2, 3, 5, 8, 13...
+
+function printFibonacci() {
+    let a = 0;
+    let b = 1;
+
+    function getNextFibonacci() {
+        const nextFibonacci = a;
+        a = b;
+        b = nextFibonacci + b;
+        return nextFibonacci;
+    }
+
+    setInterval(() => {
+        console.log(getNextFibonacci());
+    }, 1000);
+}
+
+printFibonacci();
+
+//7 Написать функцию intersect(arrA, arrB), принимающую на вход два массива и возвращающую пересечение значений этих массивов.
+
+function intersect(arrA, arrB) {
+    let intersection = arrA.filter(value => arrB.includes(value));
+    return intersection;
+}
+
+//8 Написать HTML и JS-код, который рисует кнопки "+" и "-" и значение, уменьшающееся или увеличивающееся при нажатии.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter</title>
+</head>
+<body>
+	<button id="decreaseBtn">-</button>
+  <span id="countValue">0</span>
+  <button id="increaseBtn">+</button>
+  
+
+  <script>
+    const countValue = document.getElementById('countValue');
+
+    document.getElementById('increaseBtn').addEventListener('click', function() {
+      countValue.innerText = parseInt(countValue.innerText) + 1;
+    });
+
+    document.getElementById('decreaseBtn').addEventListener('click', function() {
+      countValue.innerText = parseInt(countValue.innerText) - 1;
+    });
+  </script>
+</body>
+</html>
+
+
+//9 Что выведет этот код? Как сделать так, чтобы он вывел 1, 2, 3?
+let i;
+for(i = 1; i <= 3; i++) {
+  setTimeout(() => console.log(i), 1000);
+}
+
+
+Этот код выведет:
+4
+4
+4
+
+Чтобы код вывел 1, 2, 3, можно воспользоваться замыканием переменной i. Вот исправленный код:
+for(let i = 1; i <= 3; i++) {
+  setTimeout(() => console.log(i), 1000 * i);
+}
+
+Теперь каждое значение будет выводиться с интервалом в одну секунду и выведет:
+1
+2
+3
+

@@ -1,0 +1,109 @@
+
+<html>
+<head>
+    <title>Planning</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+ <div class="container">
+        <h1>Список дел</h1>
+        <div id="input-container">
+            <input type="text" id="taskInput" placeholder="Введите задачу...">
+            <button onclick="addTask()">Добавить</button>
+            <button onclick="clearAllTasks()">Очистить всё</button>
+        </div>
+		
+        <ul id="taskList">
+            <!---->
+        </ul>
+    </div>
+<div id="noTasksMessage" style="display: none;">Не найдено ни одного дела</div>
+<script>
+function getTasks() {
+    var tasks = localStorage.getItem('tasks');
+    if (tasks) {
+        return JSON.parse(tasks);
+    } else {
+        return [];
+    }
+}
+
+// Функция для сохранения задач в localStorage
+function saveTasks(tasks) {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Функция для добавления новой задачи
+function addTask() {
+    var taskInput = document.getElementById("taskInput");
+    var taskText = taskInput.value.trim();
+    if (taskText !== "") {
+        var tasks = getTasks();
+        tasks.unshift({ text: taskText, completed: false }); // Добавляем новую задачу в начало массива
+        saveTasks(tasks); // Сохраняем обновленный список задач
+        renderTasks(); // Обновляем отображение задач на странице
+        taskInput.value = ""; // Очищаем поле ввода
+    } else {
+        alert("Введите задачу!");
+    }
+}
+
+// Функция для отображения задач на странице
+function renderTasks() {
+    var tasks = getTasks();
+    var taskList = document.getElementById("taskList");
+    taskList.innerHTML = ""; // Очищаем список перед отрисовкой
+
+    if (tasks.length === 0) {
+        document.getElementById("noTasksMessage").style.display = "block";
+    } else {
+        document.getElementById("noTasksMessage").style.display = "none";
+    }
+
+    tasks.forEach(function(task, index) {
+        var newTask = document.createElement("li");
+        newTask.textContent = task.text;
+        if (task.completed) {
+            newTask.classList.add("completed");
+        }
+        newTask.addEventListener("click", function() {
+            toggleTask(index);
+        });
+        taskList.appendChild(newTask);
+    });
+}
+
+// При загрузке страницы отображаем сохраненные задачи
+document.addEventListener("DOMContentLoaded", function() {
+    renderTasks(); // Обновляем отображение задач на странице сразу после загрузки
+});
+
+// Функция для переключения статуса задачи (выполнена/не выполнена)
+function toggleTask(index) {
+    var tasks = getTasks();
+    tasks[index].completed = !tasks[index].completed; // Инвертируем статус задачи
+    saveTasks(tasks); // Сохраняем обновленный список задач
+    renderTasks(); // Обновляем отображение задач на странице
+}
+
+// Обработчик события для кнопки "Добавить"
+document.getElementById("addButton").addEventListener("click", addTask);
+
+// При загрузке страницы отображаем сохраненные задачи
+document.addEventListener("DOMContentLoaded", function() {
+    renderTasks();
+});
+
+// Функция для очистки всех задач
+function clearAllTasks() {
+    localStorage.removeItem('tasks'); // Удаляем все задачи из localStorage
+    renderTasks(); // Обновляем отображение задач на странице
+}
+
+// Обработчик события для кнопки "Очистить всё"
+document.getElementById("clearButton").addEventListener("click", clearAllTasks);
+</script>
+</body>
+</html>

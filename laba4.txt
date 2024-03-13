@@ -1,0 +1,226 @@
+лаба4
+
+//1 Найти максимальную разницу между элементами массива.
+function findMaxDifference(arr) {
+    if (arr.length < 2) {
+        return 0; // If array has less than 2 elements, return 0
+    }
+
+    let maxDiff = arr[1] - arr[0];
+
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            let diff = arr[j] - arr[i];
+            if (diff > maxDiff) {
+                maxDiff = diff;
+            }
+        }
+    }
+
+    return maxDiff;
+}
+
+const numbers = [7, 2, 3, 10, 2, 4, 8, 1];
+const maxDifference = findMaxDifference(numbers);
+console.log(maxDifference); // Output: 9
+
+//1.2 Вернуть массив без повторяющихся элементов.
+function removeDuplicates(arr) {
+    return arr.filter((value, index, self) => self.indexOf(value) === index);
+}
+
+const numbers = [1, 2, 2, 3, 4, 4, 5];
+const uniqueNumbers = removeDuplicates(numbers);
+console.log(uniqueNumbers); // Output: [1, 2, 3, 4, 5]
+
+//1.3 Дан массив объектов, вернуть только те, у которых isDone: true.
+function filterByIsDone(arr) {
+    return arr.filter(obj => obj.isDone === true);
+}
+
+const tasks = [
+    {id: 1, isDone: true},
+    {id: 2, isDone: false},
+    {id: 3, isDone: true}
+];
+
+const completedTasks = filterByIsDone(tasks);
+console.log(completedTasks); // Output: [{id: 1, isDone: true}, {id: 3, isDone: true}]
+
+//2 Найти элементы массива, которые больше указанного числа:
+function n(arr, num) {
+    return arr.filter(element => element > num);
+}
+console.log(n([1, 4, 6, 3, 2], 2));
+
+//2,1 Дан многомерный массив произвольной вложенности. Написать функцию, делающую из него "плоский" массив:
+function nnn(arr) {
+    let a = [];
+    function n2(s) {
+        for (let element of s) {
+            if (Array.isArray(element)) {
+                n2(element);
+            } else {
+                a.push(element); 
+            }
+        }
+    }
+    n2(arr);
+    return a;
+}
+let a = [1, 4, [34, 1, 20], [6, [6, 12, 8], 6]];
+console.log(nnn(a));
+
+//3 Найти, сколько есть в массиве пар чисел, дающих в сумме 0:
+function findPairsWithSumZero(arr) {
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] + arr[j] === 0) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+console.log(findPairsWithSumZero([-7, 12, 4, 6, -4, -12, 0])); // Output: 2
+console.log(findPairsWithSumZero([-1, 2, 4, 7, -4, 1, -2])); // Output: 3
+console.log(findPairsWithSumZero([-1, 1, 0, 1])); // Output: 1
+console.log(findPairsWithSumZero([-1, 1, -1, 1])); // Output: 2
+console.log(findPairsWithSumZero([1, 1, 1, 0, -1])); // Output: 1
+console.log(findPairsWithSumZero([0, 0])); // Output: 1
+console.log(findPairsWithSumZero([])); // Output: 0
+
+//3.2 То же самое, но найти количество троек таких чисел.
+function findTripletsWithSumZero(arr) {
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            for (let k = j + 1; k < arr.length; k++) {
+                if (arr[i] + arr[j] + arr[k] === 0) {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+}
+
+console.log(findTripletsWithSumZero([-7, 12, 4, 6, -4, -12, 0])); // Output: 1
+console.log(findTripletsWithSumZero([-1, 2, 4, 7, -4, 1, -2])); // Output: 2
+console.log(findTripletsWithSumZero([-1, 1, 0, 1])); // Output: 0
+console.log(findTripletsWithSumZero([-1, 1, -1, 1])); // Output: 1
+console.log(findTripletsWithSumZero([1, 1, 1, 0, -1])); // Output: 1
+console.log(findTripletsWithSumZero([0, 0])); // Output: 0
+console.log(findTripletsWithSumZero([])); // Output: 0
+
+//часть 2 
+
+//1 Реализовать генератор, бесконечно возвращающий случайное число в заданном диапазоне random(n, m).
+function* random(n, m) {
+    while (true) {
+        yield Math.floor(Math.random() * (m - n + 1) + n);
+    }
+}
+
+const generator = random(1, 100);
+
+for (let i = 0; i < 10; i++) {
+    console.log(generator.next().value);
+}
+
+//1.2 Реализовать генератор, бесконечно возвращающий очередное число из последовательности Падована.
+function* padovan() {
+    let a = 1, b = 1, c = 1;
+    while (true) {
+        yield a;
+        const next = a + b + c;
+        a = b;
+        b = c;
+        c = next;
+    }
+}
+
+const generator = padovan();
+
+for (let i = 0; i < 10; i++) {
+    console.log(generator.next().value);
+}
+
+//1.3 Реализовать генератор, бесконечно возвращающий очередное простое число.
+function* primeGenerator() {
+    let num = 2;
+    const primes = [];
+
+    while (true) {
+        if (isPrime(num, primes)) {
+            primes.push(num);
+            yield num;
+        }
+        num++;
+    }
+}
+
+function isPrime(num, primes) {
+    for (let prime of primes) {
+        if (num % prime === 0) {
+            return false;
+        }
+        if (prime * prime > num) {
+            break;
+        }
+    }
+    return true;
+}
+
+const generator = primeGenerator();
+
+for (let i = 0; i < 10; i++) {
+    console.log(generator.next().value);
+}
+
+//2 Посчитать число вхождений букв (или слов) в строке, используя Map.
+function nn(s) {
+    let map = new Map();
+    s = s.toLowerCase();
+    // Перебираем каждый символ строки
+    for (let char of s) {
+        // Если символ является буквой
+        if (/[а-я]/.test(char)) {
+            // Увеличиваем значение в Map для данной буквы
+            map.set(char, (map.get(char) || 0) + 1);
+        }
+    }
+    return map;
+}
+console.log(nn("клара  у карла украла кларнет"));
+
+//2.2 Написать функцию getPrime(n), возвращающее n-ное по счёту простое число, используя BigInt.
+function getPrime(n) {
+    let num = BigInt(2);
+    const primes = [];
+
+    while (primes.length < n) {
+        if (isPrime(num, primes)) {
+            primes.push(num);
+        }
+        num++;
+    }
+
+    return primes[n - 1];
+}
+
+function isPrime(num, primes) {
+    for (let prime of primes) {
+        if (num % prime === BigInt(0)) {
+            return false;
+        }
+        if (prime * prime > num) {
+            break;
+        }
+    }
+    return true;
+}
+
+console.log(getPrime(10));

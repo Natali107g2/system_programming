@@ -1,0 +1,169 @@
+часть 1
+
+//1
+let admin, name;
+name = "Джон";
+admin = name;
+alert(admin);
+
+//2
+let a = prompt("Первое число?", 1);
+let b = prompt("Второе число?", 2);
+alert(parseInt(a) + parseInt(b));
+
+//3
+for (let i = 2; i <= 10; i += 2) {
+  console.log(i);
+}
+
+//4
+let i = 0;
+while (i < 3) {
+  alert(`number ${i}!`);
+  i++;
+}
+
+//5
+let n;
+do {
+  n = prompt("Введите число, большее 100:", "");
+} while (n <= 100 && n !== null);
+
+//6
+let n = 10;
+for (let i = 2; i <= n; i++) {
+  let a = true;
+  for (let j = 2; j <= Math.sqrt(i); j++) {
+    if (i % j === 0) {
+      a = false;
+      break;
+    }
+  }
+  if (a) {
+    console.log(i);
+  }
+}
+
+
+часть 2
+
+// 1
+function reverseNumber(n) {
+    return parseInt(n.toString().split('').reverse().join(''));
+}
+console.log(reverseNumber(123));
+
+// 2
+function removeDuplicates(num) {
+    return parseInt([...new Set(num.toString().split(''))].join(''));
+}
+console.log(removeDuplicates(111333456)); 
+//[...new Set(array)] - Преобразует массив во множество (Set), что автоматически удаляет все дубликаты элементов. Затем оператор ... используется для преобразования Set обратно в массив.
+
+// 3
+function countDigitOccurrences(number, digit) {
+    const numString = number.toString();
+    const digitString = digit.toString();
+    let count = 0;
+
+    for (let i = 0; i < numString.length; i++) {
+        if (numString[i] === digitString) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+const number = 1355567;
+const digit = 5;
+const result = countDigitOccurrences(number, digit);
+console.log(result); // Output: 3
+
+// 4
+function long(n, d) {
+  let bin = n.toString(2);
+  let max = 0;
+  let k = 0;
+  for (let i = 0; i < bin.length; i++) {
+    if (bin[i] === d.toString()) {
+
+      k++; 
+      max = Math.max(max, k);
+    } else {     
+      k = 0;
+    }
+  }
+  return max;
+}
+console.log(long(10, 1));
+
+//Вернуть только уникальные символы строки.
+function bbb(str) {
+    let n = '';
+    for (let char of str) {
+        if (n.indexOf(char) === -1) {
+            n += char; // Добавляем символ в строку, если он еще не встречался
+        }
+    }
+    return n;
+}
+let s = 'ikffkiikffff';
+console.log(bbb(s));
+
+//5
+function findFirstUniqueCharacter(str) {
+    const charCount = {};
+
+    for (let char of str) {
+        charCount[char] = (charCount[char] || 0) + 1;
+    }
+
+
+    for (let char of str) {
+        if (charCount[char] === 1) {
+            return char;
+        }
+    }
+
+    return null; 
+}
+
+const str = 'фывфавыапрс';
+const result = findFirstUniqueCharacter(str);
+console.log(result); 
+
+//6
+function generateRandomString(length) {
+    const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let randomString = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomString += characters.charAt(randomIndex);
+    }
+
+    return randomString;
+}
+
+const length = 5;
+const randomString = generateRandomString(length);
+console.log(randomString); // Output: '2fvg6'
+
+//7
+function getUniqueCharacters(str) {
+    let uniqueCharacters = '';
+
+    for (let char of str) {
+        if (str.indexOf(char) === str.lastIndexOf(char)) {
+            uniqueCharacters += char;
+        }
+    }
+
+    return uniqueCharacters;
+}
+
+const inputString = 'позволяеткопироватьтекстиз';
+const uniqueString = getUniqueCharacters(inputString);
+console.log(uniqueString); // Output: 'позвляеткираьс'
+
